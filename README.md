@@ -13,5 +13,12 @@
 
 - [GetMaxListeners](event-emitter/EVENT_EMITTER.md#h2method-getmaxlistenersh2)
 - [SetMaxListeners](event-emitter/EVENT_EMITTER.md#h2method-setmaxlistenersh2)
-
-add others later...
+- [Once](event-emitter/EVENT_EMITTER.md#h2method-onceh2)
+- [On](event-emitter/EVENT_EMITTER.md#h2method-onh2)
+- [EventNames](event-emitter/EVENT_EMITTER.md#h2method-eventnamesh2)
+- [ListenerCount](event-emitter/EVENT_EMITTER.md#h2method-listenercounth2)
+- [RemoveAllListeners](event-emitter/EVENT_EMITTER.md#h2method-removealllistenersh2)
+- [RemoveListener](event-emitter/EVENT_EMITTER.md#h2method-removelistenerh2)
+- [Emit](event-emitter/EVENT_EMITTER.md#h2method-emith2)
+- [NewEventEmitter](event-emitter/EVENT_EMITTER.md#h2method-neweventemitterh2)
+- [AddListener](event-emitter/EVENT_EMITTER.md#h2method-addlistenerh2)
