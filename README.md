@@ -7,7 +7,7 @@
 
 **<h1>Event Emitter</h1>**
 
-<h3>За основу брал EventEmitter с nodejs пакета events. Поглядывал на [api](https://nodejs.org/api/events.html)</h3>
+<h3>За основу брал EventEmitter с nodejs пакета events. Поглядывал на <a href="https://nodejs.org/api/events.html">api</a></h3>
 
 **<h2>Methods list</h2>**
 
