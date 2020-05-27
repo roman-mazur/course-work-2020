@@ -6,6 +6,12 @@ const (
 	rejected
 )
 
+type AllSettledResponse struct {
+	status string
+	value  interface{}
+	reason string
+}
+
 type Promise struct {
 	state    int
 	value    interface{}

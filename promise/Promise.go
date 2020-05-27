@@ -165,3 +165,50 @@ func All(promises []*Promise, timeout time.Duration) *Promise {
 	}
 	return Resolve(result)
 }
+
+func Race(promises []*Promise, timeout time.Duration) *Promise {
+	p, ok := waitResolves(promises, 1, timeout)
+	if !ok {
+		return nil
+	}
+
+	var result interface{}
+	var chans []chan interface{}
+	chans = append(chans, await(p))
+	for i := range chans {
+		data := <-chans[i]
+		if err := checkOnError(data); err != nil {
+			return Reject(err.Error())
+		}
+		result = data
+	}
+	return Resolve(result)
+}
+
+func AllSettled(promises []*Promise, timeout time.Duration) *Promise {
+	if p, ok := waitResolves(promises, len(promises), timeout); !ok && p != nil {
+		return nil
+	}
+	var result []AllSettledResponse
+	var chans []chan interface{}
+
+	for _, p := range promises {
+		chans = append(chans, await(p))
+	}
+	for i := range chans {
+		data := <-chans[i]
+		result = append(result, func() AllSettledResponse {
+			if err := checkOnError(data); err != nil {
+				return AllSettledResponse{
+					reason: err.Error(),
+					status: "rejected",
+				}
+			}
+			return AllSettledResponse{
+				value:  data,
+				status: "fulfilled",
+			}
+		}())
+	}
+	return Resolve(result)
+}

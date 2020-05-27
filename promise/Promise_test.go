@@ -157,3 +157,66 @@ func TestAll(t *testing.T) {
 		return nil
 	})
 }
+
+func TestRace(t *testing.T) {
+	p1 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(3*time.Second, func() {
+			reject(errors.New("1"))
+		})
+	})
+	p2 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(1*time.Second, func() {
+			resolve("2")
+		})
+	})
+	p3 := Reject("3")
+	arrP := []*Promise{
+		p1, p2, p3,
+	}
+	Race(arrP, 5*time.Second).Then(func(data interface{}) interface{} {
+		if data != "3" {
+			t.Error(fmt.Sprintf("Unexpected data: %v, must be 3", data))
+		}
+		return nil
+	}, func(err error) interface{} {
+		if err != nil && err.Error() != "3" {
+			t.Error(fmt.Sprintf("Unexpected err: %v, must be 3", err))
+		}
+		return nil
+	})
+}
+
+func TestAllSettled(t *testing.T) {
+	p1 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(3*time.Second, func() {
+			reject(errors.New("1"))
+		})
+	})
+	p2 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(1*time.Second, func() {
+			resolve("2")
+		})
+	})
+	p3 := Reject("3")
+	arrP := []*Promise{
+		p1, p2, p3,
+	}
+	AllSettled(arrP, 5*time.Second).Then(func(data interface{}) interface{} {
+		d := data.([]AllSettledResponse)
+		if d[0].status != "rejected" || d[0].reason != "1" {
+			t.Error(fmt.Sprintf("Unexpected data: %+v", d[0]))
+		}
+		if d[1].status != "fulfilled" || d[1].value != "2" {
+			t.Error(fmt.Sprintf("Unexpected data: %+v", d[1]))
+		}
+		if d[2].status != "rejected" || d[2].reason != "3" {
+			t.Error(fmt.Sprintf("Unexpected data: %+v", d[2]))
+		}
+		return nil
+	}, func(err error) interface{} {
+		if err != nil {
+			t.Error("Unexpected err")
+		}
+		return nil
+	})
+}
