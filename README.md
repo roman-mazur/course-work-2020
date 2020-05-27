@@ -22,3 +22,12 @@
 - [Emit](event-emitter/EVENT_EMITTER.md#h2method-emith2)
 - [NewEventEmitter](event-emitter/EVENT_EMITTER.md#h2method-neweventemitterh2)
 - [AddListener](event-emitter/EVENT_EMITTER.md#h2method-addlistenerh2)
+
+**<h1>Promise</h1>**
+
+<h3>За основу брал Promise с js,v8. Поглядывал на <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">mdn</a> <a href="https://chromium.googlesource.com/v8/v8/+/3.29.45/src/promise.js?autodive=0/">source</a> <a href="https://github.com/then/promise">promises</a></h3>
+
+<h4>Важная мысль: </h4> 
+<h3>На реализацию промиса стоит смотреть лишь с ознакомительной точки зрения. У меня стояла задача окончательно разобраться как под капотом работает промис, и попутно сделать свою реализацию на Golang. По скольку в го используются рутины и каналы для достижения конкурентности,а асинхронности, как таковой нет, вышло громоздкая обертка над стандартными средствами и особого смысла использовать эту обертку нет :)</h3>
+<h2>Methods list</h2>
+later...
