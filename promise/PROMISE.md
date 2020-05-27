@@ -40,3 +40,32 @@ p := Resolve("5")
 p := Reject("5")
   ...
 ```
+
+## **<h2>Method: 'Then'</h2>**
+
+- onFulfilled _func(data interface{}) interface{}_
+- onRejected _func(err error) interface{}_
+- Returns: _\*Promise_
+
+<span>The Then method returns a Promise. It takes up to two arguments: callback functions for the success and failure cases of the Promise</span>
+
+```golang
+  ...
+NewPromise(func(resolve Resolver, reject Rejecter) {
+		reject(errors.New("5"))
+	}).Then(func(data interface{}) interface{} {
+		return nil
+	}, func(err error) interface{} {
+		return Resolve("6")
+	}).Then(func(data interface{}) interface{} {
+		return data
+	}, func(err error) interface{} {
+		return nil
+	}).Then(func(data interface{}) interface{} {
+		fmt.Println(data)
+		return nil
+	}, func(err error) interface{} {
+		return nil
+	})
+  ...
+```
