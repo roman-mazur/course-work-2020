@@ -174,8 +174,8 @@ func TestRace(t *testing.T) {
 		p1, p2, p3,
 	}
 	Race(arrP, 5*time.Second).Then(func(data interface{}) interface{} {
-		if data != "3" {
-			t.Error(fmt.Sprintf("Unexpected data: %v, must be 3", data))
+		if data != nil {
+			t.Error("Unexpected data")
 		}
 		return nil
 	}, func(err error) interface{} {
