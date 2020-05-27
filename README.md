@@ -36,5 +36,5 @@
 - [Reject](promise/PROMISE.md#h2method-rejecth2)
 - [Then](promise/PROMISE.md#h2method-thenh2)
 - [All](promise/PROMISE.md#h2method-allh2)
-
-later...
+- [AllSettled](promise/PROMISE.md#h2method-allsettledh2)
+- [Race](promise/PROMISE.md#h2method-raceh2)

@@ -100,3 +100,65 @@ NewPromise(func(resolve Resolver, reject Rejecter) {
 	})
   ...
 ```
+
+## **<h2>Method: 'AllSettled'</h2>**
+
+- promises _[]\*Promise_
+- timeout _time.Duration_
+- Returns: _\*Promise_
+
+<span>The AllSettled method returns a promise that resolves after all of the given promises have either fulfilled or rejected, with an array of _AllSettledResponse_ struct that each describes the outcome of each promise</span>
+
+```golang
+  ...
+p1 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(3*time.Second, func() {
+			reject(errors.New("1"))
+		})
+	})
+p2 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(1*time.Second, func() {
+			resolve("2")
+		})
+	})
+p3 := Reject("3")
+AllSettled([]*Promise{p1, p2, p3}, 5*time.Second).Then(func(data interface{}) interface{} {
+	d := data.([]AllSettledResponse)
+  fmt.Println(fmt.Sprintf("%+v", d))
+   //[{status:rejected value:<nil> reason:1} {status:fulfilled value:2 reason:} {status:rejected value:<nil> reason:3}]
+	return nil
+  }, func(err error) interface{} {
+	return nil
+})
+  ...
+```
+
+## **<h2>Method: 'Race'</h2>**
+
+- promises _[]\*Promise_
+- timeout _time.Duration_
+- Returns: _\*Promise_
+
+<span>The Race method returns a promise that fulfills or rejects as soon as one of the promises in an array fulfills or rejects, with the value or reason from that promise.</span>
+
+```golang
+  ...
+p1 := NewPromise(func(resolve Resolver, reject Rejecter) {
+	time.AfterFunc(3*time.Second, func() {
+		reject(errors.New("1"))
+	})
+})
+p2 := NewPromise(func(resolve Resolver, reject Rejecter) {
+	time.AfterFunc(1*time.Second, func() {
+		resolve("2")
+	})
+})
+p3 := Reject("3")
+Race([]*Promise{p1, p2, p3}, 5*time.Second).Then(func(data interface{}) interface{} {
+	return nil
+}, func(err error) interface{} {
+	fmt.Println(err)
+	return nil
+})
+  ...
+```
