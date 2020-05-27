@@ -69,3 +69,34 @@ NewPromise(func(resolve Resolver, reject Rejecter) {
 	})
   ...
 ```
+
+## **<h2>Method: 'All'</h2>**
+
+- promises _[]\*Promise_
+- timeout _time.Duration_
+- Returns: _\*Promise_
+
+<span>The All method returns a single Promise that fulfills when all of the promises passed as an array have been fulfilled. It rejects with the reason of the first promise that rejects or with the error caught by the first argument</span>
+
+```golang
+  ...
+	p1 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(3*time.Second, func() {
+			reject(errors.New("1"))
+		})
+	})
+	p2 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(1*time.Second, func() {
+			resolve("2")
+		})
+	})
+	p3 := Resolve("3")
+
+	All([]*Promise{p1, p2, p3}, 5*time.Second).Then(func(data interface{}) interface{} {
+		return nil
+	}, func(err error) interface{} {
+		fmt.Println(err)
+		return nil
+	})
+  ...
+```

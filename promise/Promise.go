@@ -146,3 +146,22 @@ func waitResolves(promises []*Promise, waitCount int, timeout time.Duration) (*P
 	}
 	return pr, true
 }
+
+func All(promises []*Promise, timeout time.Duration) *Promise {
+	if p, ok := waitResolves(promises, len(promises), timeout); !ok && p != nil {
+		return nil
+	}
+	var result []interface{}
+	var chans []chan interface{}
+	for _, p := range promises {
+		chans = append(chans, await(p))
+	}
+	for i := range chans {
+		data := <-chans[i]
+		if err := checkOnError(data); err != nil {
+			return Reject(err.Error())
+		}
+		result = append(result, data)
+	}
+	return Resolve(result)
+}

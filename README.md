@@ -35,5 +35,6 @@
 - [Resolve](promise/PROMISE.md#h2method-resolveh2)
 - [Reject](promise/PROMISE.md#h2method-rejecth2)
 - [Then](promise/PROMISE.md#h2method-thenh2)
+- [All](promise/PROMISE.md#h2method-allh2)
 
 later...

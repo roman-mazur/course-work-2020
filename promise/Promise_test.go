@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"testing"
+	"time"
 )
 
 func TestResolve(t *testing.T) {
@@ -127,4 +128,32 @@ func TestThenReturnPromise(t *testing.T) {
 		return nil
 	})
 
+}
+
+func TestAll(t *testing.T) {
+	p1 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(3*time.Second, func() {
+			reject(errors.New("1"))
+		})
+	})
+	p2 := NewPromise(func(resolve Resolver, reject Rejecter) {
+		time.AfterFunc(1*time.Second, func() {
+			resolve("2")
+		})
+	})
+	p3 := Resolve("3")
+	arrP := []*Promise{
+		p1, p2, p3,
+	}
+	All(arrP, 5*time.Second).Then(func(data interface{}) interface{} {
+		if data != nil {
+			t.Error("Unexpected data")
+		}
+		return nil
+	}, func(err error) interface{} {
+		if err != nil && err.Error() != "1" {
+			t.Error(fmt.Sprintf("Unexpected err: %v, must be 1", err))
+		}
+		return nil
+	})
 }
