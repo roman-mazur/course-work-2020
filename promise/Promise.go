@@ -1,5 +1,7 @@
 package promise
 
+import "errors"
+
 func (p *Promise) fulfill(result interface{}) {
 	p.state = fulfilled
 	p.value = result
@@ -26,4 +28,16 @@ func NewPromise(executor Executor) *Promise {
 	}()
 	<-p.done
 	return p
+}
+
+func Resolve(result interface{}) *Promise {
+	return NewPromise(func(resolve Resolver, reject Rejecter) {
+		resolve(result)
+	})
+}
+
+func Reject(result string) *Promise {
+	return NewPromise(func(resolve Resolver, reject Rejecter) {
+		reject(errors.New(result))
+	})
 }
